@@ -1,0 +1,63 @@
+
+import java.util.*;
+
+public class Main {
+
+	public static void main(String[] args) {
+
+		int max_waiting_time = 0; // variable for the result
+		int N = 0; // number of total arrived cow at the airport
+		int M = 0; // number of bus to transport the cows
+		int C = 0; // the capacity of bus can hold up
+
+		@SuppressWarnings("resource")
+		Scanner scanner = new Scanner(System.in);
+
+		do {
+			N = scanner.nextInt();
+			M = scanner.nextInt();
+			C = scanner.nextInt();
+		} while (N < 1 || N > Math.pow(10, 9) || M < 1 || M > Math.pow(10, 5) || C < 1 || C > Math.pow(10, N)); // conditions
+																												// for
+																												// valid
+																												// N,M,C
+
+		LinkedList<Integer> time = new LinkedList<Integer>();
+
+		for (int i = 0; i < N; i++) {
+
+			do {
+				time.add(scanner.nextInt());
+			} while (time.get(i) < 0 || time.get(i) > Math.pow(10, 9));
+		}
+
+		Collections.sort(time);
+
+		for (int i = 0; i < M * C; i += C) {
+
+			if (i == 0) {
+				max_waiting_time = time.get(i + C - 1) - time.getFirst();
+			} else {
+
+				if (i == C * M - C) {
+					if (max_waiting_time < time.getLast() - time.get(i + N % M))
+						max_waiting_time = time.getLast() - time.get(i + N % M);
+					System.out.print("1l: ");
+					System.out.println(time.getLast() - time.get(i + N % M));
+				}
+
+				else if (max_waiting_time < time.get(i + C - 1) - time.get(i)) {
+					max_waiting_time = time.get(i + C - 1) - time.get(i);
+					System.out.print("2l: ");
+					System.out.println(time.get(i + C - 1) - time.get(i));
+				}
+
+			}
+		}
+
+		System.out.println(max_waiting_time);
+    
+    scanner.close;
+
+	}
+}
